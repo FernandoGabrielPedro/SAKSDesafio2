@@ -1,7 +1,7 @@
-package br.com.saks.clienteservice.controller;
+package br.com.saks.adminservice.controller;
 
-import br.com.saks.clienteservice.model.Cliente;
-import br.com.saks.clienteservice.repository.ClienteRepository;
+import br.com.saks.adminservice.model.Admin;
+import br.com.saks.adminservice.repository.AdminRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,45 +17,46 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/admin")
+public class AdminController {
     
     @Autowired
-    private ClienteRepository clienteRepository;
+    private AdminRepository adminRepository;
     
     @GetMapping
-    public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+    public List<Admin> listarTodos() {
+        return adminRepository.findAll();
     }
     
     @GetMapping(value="/{id}")
-    public Optional<Cliente> listarPeloId(@PathVariable Long id) {
-        return clienteRepository.findById(id);
+    public Optional<Admin> listarPeloId(@PathVariable Long id) {
+        return adminRepository.findById(id);
     }
     
     @PostMapping
-    public Cliente adicionar(@RequestBody Cliente cliente) {
+    public Admin adicionar(@RequestBody Admin admin) {
         //senhacriptografar
-        return clienteRepository.save(cliente);
+        return adminRepository.save(admin);
     }
     
     @PutMapping(value="/{id}")
-    public ResponseEntity editar(@PathVariable Long id, @RequestBody Cliente cliente) {
-        return clienteRepository.findById(id)
+    public ResponseEntity editar(@PathVariable Long id, @RequestBody Admin admin) {
+        return adminRepository.findById(id)
                 .map(record -> {
-                    record.setNome(cliente.getEmail());
-                    Cliente clienteUpdated = clienteRepository.save(record);
+                    record.setNome(admin.getEmail());
+                    Admin adminUpdated = adminRepository.save(record);
                     //senhacriptografar
-                    return ResponseEntity.ok().body(clienteUpdated);
+                    return ResponseEntity.ok().body(adminUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }
     
     @DeleteMapping(value="/{id}")
     public ResponseEntity deletar(@PathVariable Long id) {
-        return clienteRepository.findById(id)
+        return adminRepository.findById(id)
                 .map(record -> {
-                    clienteRepository.deleteById(id);
+                    adminRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }
+    
 }
