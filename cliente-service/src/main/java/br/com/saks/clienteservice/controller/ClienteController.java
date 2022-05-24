@@ -35,6 +35,7 @@ public class ClienteController {
     
     @PostMapping
     public Cliente adicionar(@RequestBody Cliente cliente) {
+        //senhacriptografar
         return clienteRepository.save(cliente);
     }
     
@@ -42,8 +43,9 @@ public class ClienteController {
     public ResponseEntity editar(@PathVariable Long id, @RequestBody Cliente cliente) {
         return clienteRepository.findById(id)
                 .map(record -> {
-                    record.setNome(cliente.getNome());
+                    record.setNome(cliente.getEmail());
                     Cliente clienteUpdated = clienteRepository.save(record);
+                    //senhacriptografar
                     return ResponseEntity.ok().body(clienteUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }
@@ -56,5 +58,4 @@ public class ClienteController {
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }
-    
 }
