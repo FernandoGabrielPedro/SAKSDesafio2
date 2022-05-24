@@ -1,8 +1,8 @@
 spring:
     application:
-        name: livro-service
+        name: cliente-service
     datasource:
-        url: jdbc:mysql://localhost:3306/biblioteca
+        url: jdbc:mysql://localhost:3306/imobiliaria
         username: root
         password:
     jpa:

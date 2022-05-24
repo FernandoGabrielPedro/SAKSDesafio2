@@ -1,5 +1,6 @@
 package br.com.saks.clienteservice.model;
 
+import br.com.saks.clienteservice.criptografia.Criptografia;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,4 +27,13 @@ public class Cliente {
     
     @Column(length=15)
     private String telefone;
+    
+    
+    public void setSenha(String newSenha) {
+        this.senha = Criptografia.Criptografar(newSenha);
+    }
+    
+    public void setSenhaNC(String newSenha) {
+        this.senha = newSenha;
+    }
 }

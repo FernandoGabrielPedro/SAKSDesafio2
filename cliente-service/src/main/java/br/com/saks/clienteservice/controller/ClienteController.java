@@ -35,7 +35,6 @@ public class ClienteController {
     
     @PostMapping
     public Cliente adicionar(@RequestBody Cliente cliente) {
-        //senhacriptografar
         return clienteRepository.save(cliente);
     }
     
@@ -43,7 +42,10 @@ public class ClienteController {
     public ResponseEntity editar(@PathVariable Long id, @RequestBody Cliente cliente) {
         return clienteRepository.findById(id)
                 .map(record -> {
-                    record.setNome(cliente.getEmail());
+                    record.setNome(cliente.getNome());
+                    record.setEmail(cliente.getEmail());
+                    record.setSenhaNC(cliente.getSenha());
+                    record.setTelefone(cliente.getTelefone());
                     Cliente clienteUpdated = clienteRepository.save(record);
                     //senhacriptografar
                     return ResponseEntity.ok().body(clienteUpdated);

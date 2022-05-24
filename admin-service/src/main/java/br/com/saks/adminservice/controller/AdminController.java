@@ -35,7 +35,6 @@ public class AdminController {
     
     @PostMapping
     public Admin adicionar(@RequestBody Admin admin) {
-        //senhacriptografar
         return adminRepository.save(admin);
     }
     
@@ -43,9 +42,11 @@ public class AdminController {
     public ResponseEntity editar(@PathVariable Long id, @RequestBody Admin admin) {
         return adminRepository.findById(id)
                 .map(record -> {
-                    record.setNome(admin.getEmail());
+                    record.setNome(admin.getNome());
+                    record.setEmail(admin.getEmail());
+                    record.setSenhaNC(admin.getSenha());
+                    record.setStatus(admin.getStatus());
                     Admin adminUpdated = adminRepository.save(record);
-                    //senhacriptografar
                     return ResponseEntity.ok().body(adminUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }

@@ -19,20 +19,20 @@ public class Imovel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false)
-    private int idImovel;
+    @Column(nullable = false, name = "id_tipo_imovel")
+    private int idTipoImovel;
     
     @Column(nullable = false, length=100)
     private String titulo;
     
-    @Column(nullable = false, length=500)
+    @Column(length=500)
     private String descricao;
     
     @Temporal(TemporalType.DATE)
     @Column(nullable = false, name = "data_criacao")
     private Date dataCriacao;
     
-    @Column(columnDefinition = ("DECIMAL(8,2)"),nullable = false)
+    @Column(columnDefinition = "DECIMAL(8,2)")
     private float valor;
     
     @Column(nullable = false)

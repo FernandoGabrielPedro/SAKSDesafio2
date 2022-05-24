@@ -1,5 +1,6 @@
 package br.com.saks.adminservice.model;
 
+import br.com.saks.adminservice.criptografia.Criptografia;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,4 +27,13 @@ public class Admin {
     
     @Column(length=200)
     private int status;
+    
+    
+    public void setSenha(String newSenha) {
+        this.senha = Criptografia.Criptografar(newSenha);
+    }
+    
+    public void setSenhaNC(String newSenha) {
+        this.senha = newSenha;
+    }
 }
