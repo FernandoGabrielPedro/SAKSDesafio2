@@ -19,13 +19,13 @@ public class Admin {
     @Column(length=100)
     private String nome;
     
-    @Column(nullable = false, length=100)
+    @Column(nullable = false, length=200)
     private String email;
     
     @Column(nullable = false, length=200)
     private String senha;
     
-    @Column(length=200)
+    @Column(length=1)
     private int status;
     
     

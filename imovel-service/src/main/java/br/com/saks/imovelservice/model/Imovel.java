@@ -20,7 +20,7 @@ public class Imovel {
     private Long id;
     
     @Column(nullable = false, name = "id_tipo_imovel")
-    private int idTipoImovel;
+    private Long idTipoImovel;
     
     @Column(nullable = false, length=100)
     private String titulo;
@@ -35,6 +35,6 @@ public class Imovel {
     @Column(columnDefinition = "DECIMAL(8,2)")
     private float valor;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length=1)
     private int status;
 }
