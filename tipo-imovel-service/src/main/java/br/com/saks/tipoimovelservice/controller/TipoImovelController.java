@@ -1,7 +1,7 @@
-package br.com.saks.clienteservice.controller;
+package br.com.saks.tipoimovelservice.controller;
 
-import br.com.saks.clienteservice.model.Cliente;
-import br.com.saks.clienteservice.repository.ClienteRepository;
+import br.com.saks.tipoimovelservice.model.TipoImovel;
+import br.com.saks.tipoimovelservice.repository.TipoImovelRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,46 +17,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/tipoimovel")
+public class TipoImovelController {
     
     @Autowired
-    private ClienteRepository clienteRepository;
+    private TipoImovelRepository tipoImovelRepository;
     
     @GetMapping
-    public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+    public List<TipoImovel> listarTodos() {
+        return tipoImovelRepository.findAll();
     }
     
     @GetMapping(value="/{id}")
-    public Optional<Cliente> listarPeloId(@PathVariable Long id) {
-        return clienteRepository.findById(id);
+    public Optional<TipoImovel> listarPeloId(@PathVariable Long id) {
+        return tipoImovelRepository.findById(id);
     }
     
     @PostMapping
-    public Cliente adicionar(@RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public TipoImovel adicionar(@RequestBody TipoImovel cliente) {
+        return tipoImovelRepository.save(cliente);
     }
     
     @PutMapping(value="/{id}")
-    public ResponseEntity editar(@PathVariable Long id, @RequestBody Cliente cliente) {
-        return clienteRepository.findById(id)
+    public ResponseEntity editar(@PathVariable Long id, @RequestBody TipoImovel cliente) {
+        return tipoImovelRepository.findById(id)
                 .map(record -> {
                     record.setNome(cliente.getNome());
-                    record.setEmail(cliente.getEmail());
-                    record.setSenhaNC(cliente.getSenha());
-                    record.setTelefone(cliente.getTelefone());
-                    Cliente clienteUpdated = clienteRepository.save(record);
-                    return ResponseEntity.ok().body(clienteUpdated);
+                    TipoImovel tipoImovelUpdated = tipoImovelRepository.save(record);
+                    return ResponseEntity.ok().body(tipoImovelUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }
     
     @DeleteMapping(value="/{id}")
     public ResponseEntity deletar(@PathVariable Long id) {
-        return clienteRepository.findById(id)
+        return tipoImovelRepository.findById(id)
                 .map(record -> {
-                    clienteRepository.deleteById(id);
+                    tipoImovelRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }
+    
 }
