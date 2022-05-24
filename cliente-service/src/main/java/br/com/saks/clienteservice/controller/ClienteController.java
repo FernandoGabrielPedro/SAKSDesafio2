@@ -47,6 +47,7 @@ public class ClienteController {
                     record.setSenhaNC(cliente.getSenha());
                     record.setTelefone(cliente.getTelefone());
                     Cliente clienteUpdated = clienteRepository.save(record);
+                    //senhacriptografar
                     return ResponseEntity.ok().body(clienteUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }
