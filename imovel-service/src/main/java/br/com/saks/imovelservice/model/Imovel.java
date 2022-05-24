@@ -9,11 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import lombok.Data;
 
 @Data
 @Entity
 public class Imovel {
+    
+    @Transient
+    TipoImovel tipoImovel;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

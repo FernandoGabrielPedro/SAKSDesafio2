@@ -2,6 +2,11 @@ package br.com.saks.imovelservice.controller;
 
 import br.com.saks.imovelservice.model.Imovel;
 import br.com.saks.imovelservice.repository.ImovelRepository;
+import br.com.saks.imovelservice.service.TipoImovelService;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +28,27 @@ public class ImovelController {
     @Autowired
     private ImovelRepository imovelRepository;
     
+    @Autowired
+    private TipoImovelService tipoImovelService;
+    
     @GetMapping
     public List<Imovel> listarTodos() {
         return imovelRepository.findAll();
     }
     
     @GetMapping(value="/{id}")
-    public Optional<Imovel> listarPeloId(@PathVariable Long id) {
-        return imovelRepository.findById(id);
+    public Imovel listarPeloId(@PathVariable Long id) {
+        Optional<Imovel> imovelResponse = imovelRepository.findById(id);
+        Imovel imovel = imovelResponse.get();
+        imovel.setTipoImovel(tipoImovelService.listarPeloId(imovel.getIdTipoImovel()));
+        return imovel;
     }
     
     @PostMapping
     public Imovel adicionar(@RequestBody Imovel imovel) {
-        //senhacriptografar
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        imovel.setDataCriacao(date);
         return imovelRepository.save(imovel);
     }
     
@@ -44,8 +57,12 @@ public class ImovelController {
         return imovelRepository.findById(id)
                 .map(record -> {
                     record.setTitulo(imovel.getTitulo());
+                    record.setIdTipoImovel(imovel.getIdTipoImovel());
+                    record.setDescricao(imovel.getDescricao());
+                    record.setValor(imovel.getValor());
+                    record.setStatus(imovel.getStatus());
+                    
                     Imovel imovelUpdated = imovelRepository.save(record);
-                    //senhacriptografar
                     return ResponseEntity.ok().body(imovelUpdated);
                 }).orElse(ResponseEntity.notFound().build());
     }
