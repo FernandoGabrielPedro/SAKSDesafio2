@@ -3,11 +3,16 @@ package br.com.saks.imovelservice.controller;
 import br.com.saks.imovelservice.model.Imovel;
 import br.com.saks.imovelservice.repository.ImovelRepository;
 import br.com.saks.imovelservice.service.TipoImovelService;
+import com.google.common.collect.Lists;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,11 +49,25 @@ public class ImovelController {
         return imovel;
     }
     
+    @GetMapping(value="/tipo/{idTipoImovel}")
+    public List<Imovel> listarPeloIdTipoImovel(@PathVariable Long idTipoImovel) {
+        
+        List<Imovel> imovelTodos = imovelRepository.findAll();
+        List<Imovel> imovelPorTipo = new ArrayList<>();
+        
+        for(Imovel imovel : imovelTodos)
+            if(Objects.equals(imovel.getIdTipoImovel(), idTipoImovel))
+                imovelPorTipo.add(imovel);
+        
+        return imovelPorTipo;
+    }
+    
     @PostMapping
     public Imovel adicionar(@RequestBody Imovel imovel) {
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         imovel.setDataCriacao(date);
+        imovel.setStatus(1);
         return imovelRepository.save(imovel);
     }
     
