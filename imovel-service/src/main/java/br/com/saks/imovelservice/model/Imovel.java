@@ -2,6 +2,7 @@ package br.com.saks.imovelservice.model;
 
 import java.util.Date;
 import java.util.Calendar;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,4 +42,7 @@ public class Imovel {
     
     @Column(nullable = false, length=1)
     private int status;
+    
+    @Transient
+    private List<Cliente> clientesInteresse;
 }
