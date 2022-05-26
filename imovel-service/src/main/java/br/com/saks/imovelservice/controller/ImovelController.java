@@ -1,15 +1,15 @@
 package br.com.saks.imovelservice.controller;
 
+import br.com.saks.imovelservice.model.Cliente;
 import br.com.saks.imovelservice.model.Imovel;
+import br.com.saks.imovelservice.model.Interesse;
+import br.com.saks.imovelservice.model.InteresseIdentity;
 import br.com.saks.imovelservice.repository.ImovelRepository;
+import br.com.saks.imovelservice.service.ClienteService;
+import br.com.saks.imovelservice.service.InteresseService;
 import br.com.saks.imovelservice.service.TipoImovelService;
-import com.google.common.collect.Lists;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -36,16 +36,48 @@ public class ImovelController {
     @Autowired
     private TipoImovelService tipoImovelService;
     
+    @Autowired
+    private InteresseService interesseService;
+    
+    @Autowired
+    private ClienteService clienteService;
+    
     @GetMapping
     public List<Imovel> listarTodos() {
         return imovelRepository.findAll();
+    }
+    
+    @GetMapping(value="/comum/{id}")
+    public Imovel listarPeloIdComum(@PathVariable Long id) {
+        Optional<Imovel> imovelResponse = imovelRepository.findById(id);
+        Imovel imovel = imovelResponse.get();
+        
+        imovel.setTipoImovel(tipoImovelService.listarPeloId(imovel.getIdTipoImovel()));
+        
+        return imovel;
     }
     
     @GetMapping(value="/{id}")
     public Imovel listarPeloId(@PathVariable Long id) {
         Optional<Imovel> imovelResponse = imovelRepository.findById(id);
         Imovel imovel = imovelResponse.get();
+        
         imovel.setTipoImovel(tipoImovelService.listarPeloId(imovel.getIdTipoImovel()));
+        
+        List<Interesse> interesses;
+        interesses = interesseService.listarPorIdImovel(id);
+        
+        List<Cliente> clientes = new ArrayList<>();
+        
+        for(Interesse interesse : interesses) {
+            InteresseIdentity interesseId = interesse.getInteresseIdentity();
+            
+            Cliente cliente = clienteService.listarPeloId(interesseId.getIdCliente());
+            clientes.add(cliente);
+        }
+        
+        imovel.setClientesInteresse(clientes);
+        
         return imovel;
     }
     
