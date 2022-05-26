@@ -2,6 +2,7 @@ package br.com.saks.tipoimovelservice.controller;
 
 import br.com.saks.tipoimovelservice.model.TipoImovel;
 import br.com.saks.tipoimovelservice.repository.TipoImovelRepository;
+import br.com.saks.tipoimovelservice.service.ImovelService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,20 @@ public class TipoImovelController {
     @Autowired
     private TipoImovelRepository tipoImovelRepository;
     
+    @Autowired
+    private ImovelService imovelService;
+    
     @GetMapping
     public List<TipoImovel> listarTodos() {
         return tipoImovelRepository.findAll();
     }
     
     @GetMapping(value="/{id}")
-    public Optional<TipoImovel> listarPeloId(@PathVariable Long id) {
-        return tipoImovelRepository.findById(id);
+    public TipoImovel listarPeloId(@PathVariable Long id) {
+        Optional<TipoImovel> tipoImovelResponse = tipoImovelRepository.findById(id);
+        TipoImovel tipoImovel = tipoImovelResponse.get();
+        tipoImovel.setImoveisRelacionados(imovelService.listarPeloIdTipoImovel(tipoImovel.getId()));
+        return tipoImovel;
     }
     
     @PostMapping

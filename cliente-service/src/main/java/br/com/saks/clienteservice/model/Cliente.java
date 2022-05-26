@@ -1,11 +1,13 @@
 package br.com.saks.clienteservice.model;
 
 import br.com.saks.clienteservice.criptografia.Criptografia;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -27,6 +29,9 @@ public class Cliente {
     
     @Column(length=15)
     private String telefone;
+    
+    @Transient
+    List<Imovel> imoveisInteresse;
     
     
     public void setSenha(String newSenha) {

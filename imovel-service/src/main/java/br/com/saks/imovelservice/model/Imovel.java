@@ -16,15 +16,15 @@ import lombok.Data;
 @Entity
 public class Imovel {
     
-    @Transient
-    TipoImovel tipoImovel;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(nullable = false, name = "id_tipo_imovel")
     private Long idTipoImovel;
+    
+    @Transient
+    TipoImovel tipoImovel;
     
     @Column(nullable = false, length=100)
     private String titulo;
